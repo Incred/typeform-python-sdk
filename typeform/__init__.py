@@ -10,26 +10,28 @@ __all__ = ['Typeform']
 class Typeform:
     """Typeform API client"""
 
-    def __init__(self, token: str, headers: dict = {}):
+    def __init__(self, token: str, headers: dict = None):
         """Constructor for Typeform API client"""
+        if headers is None:
+            headers = {}
         client = Client(token, headers=headers)
-        self.__forms = Forms(client)
-        self.__themes = Themes(client)
-        self.__images = Images(client)
-        self.__responses = Responses(client)
+        self._forms = Forms(client)
+        self._themes = Themes(client)
+        self._images = Images(client)
+        self._responses = Responses(client)
 
     @property
     def forms(self) -> Forms:
-        return self.__forms
+        return self._forms
 
     @property
     def themes(self) -> Themes:
-        return self.__themes
+        return self._themes
 
     @property
     def images(self) -> Images:
-        return self.__images
+        return self._images
 
     @property
     def responses(self) -> Responses:
-        return self.__responses
+        return self._responses

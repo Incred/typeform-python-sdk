@@ -5,7 +5,7 @@ import urllib.parse
 from .fixtures import MOCK, TOKEN, WORKSPACE, WORKSPACE_ID
 
 from typeform import Typeform
-from typeform.constants import API_BASE_URL
+from typeform.settings import API_BASE_URL
 
 
 class ResponsesTestCase(TestCase):
@@ -20,7 +20,7 @@ class ResponsesTestCase(TestCase):
 
     def tearDown(self):
         if not MOCK:
-            list = self.forms.list(workspaceId=WORKSPACE_ID)
+            list = self.forms.list(workspace_id=WORKSPACE_ID)
             forms = list.get('items', [])
             for form in forms:
                 self.forms.delete(form.get('id'))
@@ -85,7 +85,7 @@ class ResponsesTestCase(TestCase):
         with requests_mock.mock(real_http=not MOCK) as m:
             url = API_BASE_URL+'/forms/'+self.formID+'/responses?included_tokens=1'
             m.delete(url, json={})
-            self.responses.delete(self.formID, includedTokens='1')
+            self.responses.delete(self.formID, included_tokens='1')
 
             history = m.request_history
             self.assertEqual(history[0].url, url)
@@ -98,7 +98,7 @@ class ResponsesTestCase(TestCase):
         with requests_mock.mock(real_http=not MOCK) as m:
             url = API_BASE_URL+'/forms/'+self.formID+'/responses?included_tokens=1%2C2%2C3'
             m.delete(url, json={})
-            self.responses.delete(self.formID, includedTokens=['1', '2', '3'])
+            self.responses.delete(self.formID, included_tokens=['1', '2', '3'])
 
             history = m.request_history
             self.assertEqual(history[0].url, url)
